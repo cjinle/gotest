@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/base64"
 	"fmt"
 )
 
@@ -42,8 +43,16 @@ func main() {
 		0xEC, 0x0D, 0x23, 0x62, 0xE7, 0xE1, 0xF2, 0xCD, 0xA2, 0x07, 0x5D, 0xA7, 0xCF, 0x8B, 0xB4, 0x49,
 	}
 
-	str := 'abc我是中国人hello'
-	
 	fmt.Println(receByteDecoder)
 	fmt.Println(sendByteEncoder)
+	str := "abc我是中国人hello"
+	var str2 string
+	for _, c := range []byte(str) {
+		fmt.Println(sendByteEncoder[c])
+		// fmt.Println(string(sendByteEncoder[c]))
+		str2 += string(sendByteEncoder[c])
+	}
+	fmt.Println(str2)
+	fmt.Println(base64.StdEncoding.EncodeToString([]byte(str2)))
+	fmt.Println(base64.StdEncoding.EncodeToString([]byte(str)))
 }
