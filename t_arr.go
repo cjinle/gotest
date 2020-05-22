@@ -9,6 +9,9 @@ func main() {
 	r := [...]int{99: -1}
 	fmt.Println(r)
 
-	fmt.Println('hello world')
+	fmt.Println("hello world")
 
+	var str = [...]byte{'a', 'b', 'c'}
+	str = append(str[:], 'x')
+	fmt.Println(str)
 }
