@@ -8,5 +8,5 @@ import (
 
 func main() {
 	fmt.Println("test main starting ... ")
-	mylib.MyJson()
+	mylib.ArrOuput()
 }
