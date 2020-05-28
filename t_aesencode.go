@@ -9,7 +9,7 @@ import (
 
 func main() {
 	var key = []byte("1234567812345678")
-	var data = []byte("chenjinle.....................")
+	var data = []byte("chenjinle....我是中文................")
 
 	ret := EcbEncrypt(data, key)
 	fmt.Println(base64.StdEncoding.EncodeToString(ret))
