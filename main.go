@@ -12,4 +12,5 @@ func main() {
 	mylib.Http()
 	mylib.LogOutput()
 	mylib.Redis()
+	mylib.Func()
 }
