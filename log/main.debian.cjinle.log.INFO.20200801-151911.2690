@@ -1,0 +1,5 @@
+Log file created at: 2020/08/01 15:19:11
+Running on machine: debian
+Binary: Built with gc go1.9.2 for linux/amd64
+Log line format: [IWEF]mmdd hh:mm:ss.uuuuuu threadid file:line] msg
+I0801 15:19:11.575798    2690 main.go:16] hello

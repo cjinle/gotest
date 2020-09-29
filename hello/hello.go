@@ -1,9 +1,9 @@
-package main
+package hello
 
 import (
 	"fmt"
 )
 
-func main() {
+func Print() {
 	fmt.Println("cjinle hello")
 }
