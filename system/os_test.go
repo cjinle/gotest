@@ -1,6 +1,7 @@
 package system
 
 import (
+	"fmt"
 	"testing"
 )
 
@@ -15,4 +16,5 @@ func TestHostName(t *testing.T) {
 	} else {
 		t.Error("hostname is not debian")
 	}
+	fmt.Println(GetProxyEnv())
 }

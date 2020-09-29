@@ -1,19 +1,12 @@
-package moneyserver
+package moneyserver3
 
 import (
 	"fmt"
 	"math/rand"
+	"sync"
 )
 
 const TABLENUM int = 100
-
-type MoneyServer interface {
-	InitData()
-	GetTable(uid int) int
-	AddMoney(uid int, num int) (int, error)
-	GetMoney(uid int) (int, error)
-	String() string
-}
 
 type UserInfo struct {
 	Money int
@@ -21,15 +14,17 @@ type UserInfo struct {
 
 type UserList [TABLENUM]map[int]*UserInfo
 
-func MoneyServer() {
-	var ms MoneyServer = &UserList{}
-	ms.InitData()
-	// test
-	for i := 0; i < 999; i++ {
-		ms.AddMoney(i%100, rand.Intn(999999))
-	}
+var (
+	ul UserList
+	mu sync.Mutex
+)
 
-	fmt.Println(ms)
+func MoneyServer3() {
+	ul.InitData()
+	for i := 0; i < 99999; i++ {
+		ul.AddMoney(i%100, rand.Intn(999999))
+	}
+	fmt.Println(ul)
 }
 
 func (ul *UserList) InitData() {
@@ -49,23 +44,13 @@ func (ul *UserList) GetTable(uid int) int {
 
 func (ul *UserList) AddMoney(uid int, num int) (int, error) {
 	idx := ul.GetTable(uid)
+	mu.Lock()
 	ul[idx][uid].Money = ul[idx][uid].Money + num
+	mu.Unlock()
 	return ul[idx][uid].Money, nil
 }
 
 func (ul *UserList) GetMoney(uid int) (int, error) {
 	idx := ul.GetTable(uid)
 	return ul[idx][uid].Money, nil
-}
-
-func (ul *UserList) String() string {
-	for i := 0; i < TABLENUM; i++ {
-		if len(ul[i]) == 0 {
-			continue
-		}
-		for k, v := range ul[i] {
-			fmt.Printf("%d\t%v\n", k, v.Money)
-		}
-	}
-	return "done"
 }

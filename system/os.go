@@ -11,3 +11,7 @@ func GetHostName() (string, error) {
 func GetEnv() string {
 	return "PATH: " + os.Getenv("PATH")
 }
+
+func GetProxyEnv() string {
+	return "proxy env: " + os.Getenv("http_proxy")
+}

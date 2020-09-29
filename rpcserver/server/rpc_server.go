@@ -1,4 +1,4 @@
-package mylib
+package rpcserver
 
 import (
 	"errors"
