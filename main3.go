@@ -25,5 +25,6 @@ func main() {
 	rand.Read(bytes)
 	fmt.Printf("%x", bytes)
 	utils.Assert(1 == 1, "1 == 1")
+	utils.Assert(false == false, "false is false")
 }
 
