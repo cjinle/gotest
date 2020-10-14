@@ -1,10 +1,10 @@
 package main
 
 import (
-	"crypto/md5"
 	"crypto/rand"
 	"fmt"
 	"strings"
+	"github.com/cjinle/test/utils"
 )
 
 func Implode(sep string, v ...interface{}) string {
@@ -16,22 +16,14 @@ func Implode(sep string, v ...interface{}) string {
 }
 
 func main() {
-	xx := md5.Sum([]byte("hello"))
-	fmt.Println(fmt.Sprintf("%x", xx))
-
-	fmt.Println(md5str("123456"))
+	fmt.Println(utils.Md5Sum("123456"))
 
 	A := []int{1, 2, 3}
-	B := strings.Trim(strings.Join(strings.Fields(fmt.Sprint(A)), "&"), "[]")
-	fmt.Println(B)
-	fmt.Println(Implode("&", A))
+	fmt.Println(utils.Implode2("&", A))
 
 	bytes := make([]byte, 16)
 	rand.Read(bytes)
 	fmt.Printf("%x", bytes)
-
+	utils.Assert(1 == 1, "1 == 1")
 }
 
-func md5str(str string) string {
-	return fmt.Sprintf("%x", md5.Sum([]byte(str)))
-}

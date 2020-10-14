@@ -1,7 +1,11 @@
 package utils
 
 import (
+	"crypto/md5"
+	"encoding/hex"
+	"fmt"
 	"math/rand"
+	"strings"
 	"time"
 )
 
@@ -15,4 +19,28 @@ func RandArray(n int) []int {
 	}
 
 	return arr
+}
+
+func Assert(t bool, s string) {
+	if !t {
+		panic(s)
+	}
+}
+
+func Implode(sep string, v ...interface{}) string {
+	data := make([]string, len(v))
+	for idx, val := range v {
+		data[idx] = fmt.Sprint(val)
+	}
+	return strings.Join(data, sep)
+}
+
+func Implode2(sep string, arr []int) string {
+	return strings.Trim(strings.Join(strings.Fields(fmt.Sprint(arr)), "&"), "[]")
+}
+
+func Md5Sum(s string) string {
+	bytes := md5.Sum([]byte(s))
+	// return fmt.Sprintf("%x", bytes)
+	return hex.EncodeToString(bytes[:])
 }
