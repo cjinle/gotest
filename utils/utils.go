@@ -44,3 +44,7 @@ func Md5Sum(s string) string {
 	// return fmt.Sprintf("%x", bytes)
 	return hex.EncodeToString(bytes[:])
 }
+
+func Hello() string {
+	return "hello world!"
+}
