@@ -4,18 +4,22 @@ import (
 	"testing"
 )
 
-func TestBuffer(t *testing.T) {
-	Buffer()
+func TestOne(t *testing.T) {
+	DownloadPic()
 }
 
-func TestArr(t *testing.T) {
-	ArrOuput()
-}
+// func TestBuffer(t *testing.T) {
+// 	Buffer()
+// }
 
-func TestTime(t *testing.T) {
-	Time()
-}
+// func TestArr(t *testing.T) {
+// 	ArrOuput()
+// }
 
-func TestMysql(t *testing.T) {
-	Mysql()
-}
+// func TestTime(t *testing.T) {
+// 	Time()
+// }
+
+// func TestMysql(t *testing.T) {
+// 	Mysql()
+// }
