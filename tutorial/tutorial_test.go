@@ -15,3 +15,7 @@ func TestArr(t *testing.T) {
 func TestTime(t *testing.T) {
 	Time()
 }
+
+func TestMysql(t *testing.T) {
+	Mysql()
+}
