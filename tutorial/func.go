@@ -2,6 +2,7 @@ package tutorial
 
 import (
 	"fmt"
+	"image/color"
 	// "strings"
 )
 

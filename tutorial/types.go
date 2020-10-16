@@ -2,6 +2,8 @@ package tutorial
 
 import (
 	"fmt"
+	"encoding/json"
+	"log"
 )
 
 // ----------- array ------------
@@ -19,6 +21,14 @@ func ArrOuput() {
 	// str = append(str[:], 'x')
 	// fmt.Println(str)
 }
+// --------- slice ---------
+func Slice() {
+	s := []string{"a", "b", "c"}
+	fmt.Println(s)
+	s = s[0:0]
+	fmt.Println(s)
+}
+
 // --------------- map --------
 // map example
 type La struct {
@@ -47,8 +57,21 @@ func Make() {
 }
 
 
+// ------------- struct ------------
+type S struct {
+	int
+	string
+}
 
-// ----------------------------- 
+func Struct2() {
+	s := S{1, "hello"}
+	fmt.Println(s)
+	fmt.Println(s.int)
+	fmt.Println(s.string)
+}
+
+
+// ------------- interface ---------------- 
 type I interface {
 	Info() string
 }
@@ -110,4 +133,30 @@ func Interface2Output() {
 
 }
 
-// ---------------------------
+// ------------ json ---------------
+type Movie struct {
+	Title  string
+	Year   int  `json:"released"`
+	Color  bool `json:"color,omitempty"`
+	Actors []string
+}
+
+func MyJson() {
+	var movies = []Movie{
+		{Title: "Casablanca", Year: 1942, Color: false,
+			Actors: []string{"Humphrey Bogart", "Ingrid Bergman"}},
+		{Title: "Cool Hand Luke", Year: 1967, Color: true,
+			Actors: []string{"Paul Newman"}},
+		{Title: "Bullitt", Year: 1968, Color: true,
+			Actors: []string{"Steve McQueen", "Jacqueline Bisset"}},
+	}
+
+	data, err := json.Marshal(movies)
+	log.Printf("JSON Data: %s", data)
+	if err != nil {
+		log.Fatalf("JSON marshaling failed: %s", err)
+	}
+	fmt.Printf("%s\n", data)
+
+}
+
