@@ -24,3 +24,48 @@ func Func() {
 func Test() ActInfo {
 	return ActInfo{"aaaa", "bbb"}
 }
+
+
+// ---------- method -------------
+type MyInt int
+
+func (i MyInt) Test() int {
+	fmt.Printf("Type: %T Value: %v\n", i, i)
+	return int(i) + 10
+}
+
+func Method() {
+	aa := MyInt(123)
+
+	fmt.Println(aa.Test())
+}
+
+
+// ---------------------------------
+type P int
+
+func (P) f() {
+	fmt.Println("f call!")
+}
+
+type Point struct {
+	X, Y float64
+}
+
+type ColoredPoint struct {
+	Point
+	Color color.RGBA
+}
+
+func Method2() {
+	var x P
+	x.f()
+
+	var cp ColoredPoint
+
+	cp.X = 1.1
+	cp.Y = 1.2
+
+	fmt.Println(cp)
+
+}
