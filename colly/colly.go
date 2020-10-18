@@ -1,8 +1,9 @@
 package main
 
 import (
-	"github.com/gocolly/colly"
 	"fmt"
+
+	"github.com/gocolly/colly"
 )
 
 func main() {
@@ -15,7 +16,7 @@ func main() {
 		c.Visit(e.Request.AbsoluteURL(link))
 	})
 
-	c.OnRequest(func(r *colly.Request){
+	c.OnRequest(func(r *colly.Request) {
 		fmt.Println("visiting", r.URL.String())
 	})
 	c.Visit("https://news.163.com/")

@@ -39,6 +39,7 @@ func Implode2(sep string, arr []int) string {
 	return strings.Trim(strings.Join(strings.Fields(fmt.Sprint(arr)), "&"), "[]")
 }
 
+// Md5Sum 给字符串加密md5
 func Md5Sum(s string) string {
 	bytes := md5.Sum([]byte(s))
 	// return fmt.Sprintf("%x", bytes)
