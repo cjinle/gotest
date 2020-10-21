@@ -22,6 +22,26 @@ func _TestTwoToOne(t *testing.T) {
 }
 
 func TestSth(t *testing.T) {
-	n := 1907
-	fmt.Println(int(n/100))
+	a := []int{121, 144, 19, 161, 19, 144, 19, 11}
+	b := []int{121, 14641, 20736, 361, 25921, 361, 20736, 361}
+	fmt.Println(Comp(a, b))
+
+}
+
+func Comp(array1 []int, array2 []int) bool {
+  for _, v := range array1 {
+    sq := v * v
+    find := false
+    fmt.Println(v, sq)
+    for _, vv := range array2 {
+      if sq == vv {
+      	find = true
+        break
+      }
+    }
+    if !find {
+      return false
+    }
+  }
+  return true
 }
