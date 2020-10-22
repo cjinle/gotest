@@ -26,6 +26,8 @@ func TestSth(t *testing.T) {
 	// fmt.Println(Comp(a, b))
 
 	// fmt.Println(HighScore2("take me to semynak"))
+	fmt.Println(HighScore("bbaaabbccd"))
+	fmt.Println(HighScore3("bbaaabbccd"))
 	// fmt.Println(SplitStrings2("abcdef"))
 	// fmt.Println(PickPeaks([]int{3, 2, 3, 6, 4, 1, 2, 3, 2, 1, 2, 3}))
 
@@ -35,7 +37,7 @@ func TestSth(t *testing.T) {
 	// }
 	// fmt.Println(x)
 	// fmt.Println(WeirdCase2("Weird string case"), byte('A')+32)
-	fmt.Println(TwoSum([]int{1, 2, 3, 4}, 4))
+	// fmt.Println(TwoSum([]int{1, 2, 3, 4}, 4))
 
 	// a := byte('a') + byte(1)
 	// b := rune('a') + rune(1)

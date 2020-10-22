@@ -2,6 +2,7 @@ package codewars
 
 import (
 	"fmt"
+	"sort"
 	"strings"
 )
 
@@ -49,4 +50,34 @@ func HighScore2(s string) string {
 		}
 	}
 	return arr[maxIdx]
+}
+
+type Item struct {
+	K byte
+	V int
+}
+
+func HighScore3(s string) string {
+	c := make(map[byte]int)
+
+	for _, v := range []byte(s) {
+		if _, ok := c[v]; ok {
+			c[v]++
+		} else {
+			c[v] = 1
+		}
+	}
+	data := []Item{}
+	for k, v := range c {
+		data = append(data, Item{k, v})
+	}
+	out := ""
+	sort.SliceStable(data, func(i, j int) bool { return data[i].V > data[j].V })
+	fmt.Println(data)
+
+	for _, v := range data {
+		out = out + fmt.Sprintf("%c=%d, ", v.K, v.V)
+	}
+	out = strings.Trim(out, ", ")
+	return out
 }
