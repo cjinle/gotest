@@ -2,8 +2,8 @@ package codewars
 
 import (
 	"fmt"
-	"testing"
 	"sort"
+	"testing"
 )
 
 func _TestTwoToOne(t *testing.T) {
@@ -12,11 +12,10 @@ func _TestTwoToOne(t *testing.T) {
 	b = "xxxxyyyyabklmopq"
 	fmt.Println(TwoToOne2(a, b))
 
-
-	arr := []int{1,2,3,98,10,5,18}
+	arr := []int{1, 2, 3, 98, 10, 5, 18}
 	sort.Ints(arr)
 	fmt.Println(arr)
-	
+
 	fmt.Println(sort.Reverse(sort.IntSlice(arr)))
 
 }
@@ -35,23 +34,28 @@ func TestSth(t *testing.T) {
 	// 	x[k] = v * 2
 	// }
 	// fmt.Println(x)
-	fmt.Println(WeirdCase("Weird string case"), byte('A')+32)
+	// fmt.Println(WeirdCase2("Weird string case"), byte('A')+32)
+	fmt.Println(TwoSum([]int{1, 2, 3, 4}, 4))
+
+	// a := byte('a') + byte(1)
+	// b := rune('a') + rune(1)
+	// fmt.Println(a, b)
 }
 
 func Comp(array1 []int, array2 []int) bool {
-  for _, v := range array1 {
-    sq := v * v
-    find := false
-    fmt.Println(v, sq)
-    for _, vv := range array2 {
-      if sq == vv {
-      	find = true
-        break
-      }
-    }
-    if !find {
-      return false
-    }
-  }
-  return true
+	for _, v := range array1 {
+		sq := v * v
+		find := false
+		fmt.Println(v, sq)
+		for _, vv := range array2 {
+			if sq == vv {
+				find = true
+				break
+			}
+		}
+		if !find {
+			return false
+		}
+	}
+	return true
 }
