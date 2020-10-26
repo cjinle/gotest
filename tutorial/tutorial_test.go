@@ -5,7 +5,9 @@ import (
 )
 
 func TestOne(t *testing.T) {
-	DownloadPic()
+	// DownloadPic()
+	UdpLogs()
+	// Tick()
 }
 
 // func TestBuffer(t *testing.T) {

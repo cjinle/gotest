@@ -42,6 +42,8 @@ func TestSth(t *testing.T) {
 	// a := byte('a') + byte(1)
 	// b := rune('a') + rune(1)
 	// fmt.Println(a, b)
+
+	fmt.Println(FindOutlier([]int{2, -6, 8, -10, -3}))
 }
 
 func Comp(array1 []int, array2 []int) bool {

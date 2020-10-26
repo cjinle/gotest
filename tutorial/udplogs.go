@@ -2,6 +2,8 @@ package tutorial
 
 import (
 	"fmt"
+	"time"
+
 	// "io/ioutil"
 	"net"
 	"os"
@@ -29,13 +31,26 @@ func UdpLogs() {
 	defer listen.Close()
 	up := udpParam{listen, f}
 
+	go TimeTick()
+
 	for {
 		handleUDPConection(&up)
 	}
 }
 
+func TimeTick() {
+	i := 0
+	for range time.Tick(time.Second * 1) {
+		fmt.Println("tick...", i)
+		i++
+		if i > 10 {
+			return
+		}
+	}
+}
+
 func handleUDPConection(up *udpParam) {
-	buf := make([]byte, 1024)
+	buf := make([]byte, 4096)
 	n, addr, err := up.conn.ReadFromUDP(buf)
 	if err != nil {
 		fmt.Println(err)
