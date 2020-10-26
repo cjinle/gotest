@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"sort"
 	"testing"
+	// "strings"
 )
 
 func _TestTwoToOne(t *testing.T) {
@@ -42,6 +43,33 @@ func TestSth(t *testing.T) {
 	// a := byte('a') + byte(1)
 	// b := rune('a') + rune(1)
 	// fmt.Println(a, b)
+
+	// var builder strings.Builder
+	// builder.WriteString("hello world")
+	// builder.WriteByte(97)
+	// builder.WriteRune(rune('我'))
+	// fmt.Println(builder.String(), builder)
+
+	fmt.Println(ValidBraces("([]){}[]"))
+	fmt.Println(ExpressionMatter(1,3,1))
+	fmt.Println(fmt.Sprintf("%05d", 1))
+}
+
+func ExpressionMatter(a int, b int, c int) int {
+	arr := []int{a, b, c}
+	sort.Ints(arr)
+	tmp := 0
+	if arr[0]*arr[1] < arr[0]+arr[1] {
+		tmp = arr[0] + arr[1]
+	} else {
+		tmp = arr[0] * arr[1]
+	}
+	fmt.Println(tmp*arr[2], tmp+arr[2])
+	if tmp*arr[2] < tmp+arr[2] {
+		return tmp + arr[2]
+	} else {
+		return tmp * arr[2]
+	}
 }
 
 func Comp(array1 []int, array2 []int) bool {
