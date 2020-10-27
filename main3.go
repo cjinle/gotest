@@ -4,22 +4,15 @@ import (
 	"crypto/rand"
 	"fmt"
 	"strings"
-
 	"github.com/cjinle/test/utils"
 )
 
-// Implode str...
 func Implode(sep string, v ...interface{}) string {
 	data := make([]string, len(v))
 	for idx, val := range v {
 		data[idx] = fmt.Sprint(val)
 	}
 	return strings.Join(data, sep)
-}
-
-// Explode sth...
-func Explode(seq, str string) []string {
-	return []string{"hello", "word"}
 }
 
 func main() {
@@ -33,9 +26,5 @@ func main() {
 	fmt.Printf("%x", bytes)
 	utils.Assert(1 == 1, "1 == 1")
 	utils.Assert(false == false, "false is false")
-
-
-	str := "xxx"
-	str = strings.TrimRight(str, "|")
-	strings.Split(str, "|") 
 }
+
