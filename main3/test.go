@@ -35,5 +35,9 @@ func main() {
 	var w Writer = f
 	// var w Writer = &File{}
 	fmt.Println(w.Write([]byte("hello")))
+
+
+	idBytes := []byte{1,15:0}
+	fmt.Println(len(idBytes), cap(idBytes))
 	
 }
