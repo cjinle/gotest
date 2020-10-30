@@ -8,6 +8,7 @@ import (
 	"math/rand"
 	"encoding/hex"
 	"net"
+	"io"
 )
 
 func GetGameInfo(mid uint32) {
@@ -22,19 +23,32 @@ func GetGameInfo(mid uint32) {
 	n, err := c.Write(dp)
 	fmt.Println(n, err)
 
-	rb := make([]byte, 4096)
-	recvLen, err := c.Read(rb)
-	if err != nil {
-		fmt.Println(err)
-	}
+	headData := make([]byte, 24)
+	_, err = io.ReadFull(c, headData)
+	fmt.Printf("%s", hex.Dump(headData))
+	var ret, dataLen int32
+	buff = bytes.NewBuffer(headData[16:])
+	binary.Read(buff, binary.BigEndian, &ret)
+	binary.Read(buff, binary.BigEndian, &dataLen)
+	fmt.Println(ret, dataLen)
+
+	data := make([]byte, dataLen-1)
+	_, err = io.ReadFull(c, data)
+	fmt.Println(data)
+
+	// rb := make([]byte, 4096)
+	// recvLen, err := c.Read(rb)
+	// if err != nil {
+	// 	fmt.Println(err)
+	// }
 	
-	data := rb[16:recvLen]
-	fmt.Printf("%s", hex.Dump(data))
+	// data := rb[16:recvLen]
+	// fmt.Printf("%s", hex.Dump(data))
 
-	buff = bytes.NewBuffer(data)
+	// buff = bytes.NewBuffer(data)
 
-	v := DataUnpack(bytes.NewBuffer(rb[16:recvLen]))
-	fmt.Println(v)
+	// v := DataUnpack(bytes.NewBuffer(rb[16:recvLen]))
+	// fmt.Println(v)
 
 }
 
