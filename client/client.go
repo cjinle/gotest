@@ -11,20 +11,34 @@ import (
 	"io"
 )
 
-func GetGameInfo(mid uint32) {
-	c, _ := net.Dial("tcp", "192.168.100.107:8051")
-	defer c.Close()
 
+type Client struct {
+	conn *net.TCPConn
+}
+
+func NewClient() (*Client, error) {
+	tcpAddr, _ := net.ResolveTCPAddr("tcp4", "192.168.100.107:8051")
+	conn, err := net.DialTCP("tcp", nil, tcpAddr)
+	if err != nil {
+		panic(err)
+	}
+	return &Client{conn}, err
+}
+
+func (client *Client) GetGameInfo(mid uint32) {
+	// c, _ := net.Dial("tcp", "192.168.100.107:8051")
+	// defer c.Close()
+	conn := client.conn
 	buff := bytes.NewBuffer([]byte{})
 	binary.Write(buff, binary.BigEndian, uint32(mid))
 	dp := DataPack(buff)
 	fmt.Printf("%s", hex.Dump(dp))
 	
-	n, err := c.Write(dp)
+	n, err := conn.Write(dp)
 	fmt.Println(n, err)
 
 	headData := make([]byte, 24)
-	_, err = io.ReadFull(c, headData)
+	_, err = io.ReadFull(conn, headData)
 	fmt.Printf("%s", hex.Dump(headData))
 	var ret, dataLen int32
 	buff = bytes.NewBuffer(headData[16:])
@@ -33,22 +47,8 @@ func GetGameInfo(mid uint32) {
 	fmt.Println(ret, dataLen)
 
 	data := make([]byte, dataLen-1)
-	_, err = io.ReadFull(c, data)
+	_, err = io.ReadFull(conn, data)
 	fmt.Println(data)
-
-	// rb := make([]byte, 4096)
-	// recvLen, err := c.Read(rb)
-	// if err != nil {
-	// 	fmt.Println(err)
-	// }
-	
-	// data := rb[16:recvLen]
-	// fmt.Printf("%s", hex.Dump(data))
-
-	// buff = bytes.NewBuffer(data)
-
-	// v := DataUnpack(bytes.NewBuffer(rb[16:recvLen]))
-	// fmt.Println(v)
 
 }
 

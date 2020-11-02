@@ -6,6 +6,8 @@ import (
 )
 
 func TestSth(t *testing.T) {
-	GetGameInfo(2494)
+	cli, _ := NewClient()
+	fmt.Println(cli)
+	cli.GetGameInfo(2494)
 	fmt.Println("done")
 }
