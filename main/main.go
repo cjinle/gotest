@@ -1,26 +1,24 @@
 package main
 
 import (
-	"flag"
 	"fmt"
-
-	//"github.com/cjinle/test/golog"
-	"github.com/golang/glog"
+	"os"
 )
+
+type Fd interface{}
+
+func NewFile() (Fd, err error) {
+	return os.OpenFile("xx.log", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0644)
+}
 
 func main() {
 	fmt.Println("test main starting ... ")
+	fd, _ = NewFile()
+	fd.logs("a")
+	fd.logs("b")
+}
 
-	flag.Parse()
-	defer glog.Flush()
-	glog.Infof("hello")
-
-	// logger := golog.NewLogger(&golog.LogConf{Path: "./log", Level: golog.Debug, Prefix: "aa_"})
-	// logger.Printf(golog.Info, "test log info %v", [5]int{1, 2, 3, 4, 5})
-
-	// mylib.ArrOuput()
-	// mylib.Http()
-	// mylib.LogOutput()
-	// mylib.Redis()
-	// mylib.Func()
+func (fd *Fd) logs(str string) {
+	buf := []byte(str + "\n")
+	fd.Write(buf)
 }
