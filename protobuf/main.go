@@ -49,5 +49,5 @@ func main() {
 	}
 	user.Vip = 10
 
-	fmt.Println(user.Mid, user.GetSicon(), user)
+	fmt.Println(user.Mid, user.GetSicon(), pb.TypeCard_SAMPLE_COLOR)
 }

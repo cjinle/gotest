@@ -32,4 +32,14 @@ message User {
 	repeated int32 props = 6; // 道具列表
 }
 
+enum TypeCard {
+	INVALID = 0;
+	COMMON = 11;
+	SAMPLE_COLOR = 12;
+	FLUSH = 13;
+	THREE = 14;
+	STRAIGHT_FLUSH = 15;
+	LEOPARD = 16;
+}
+
 
