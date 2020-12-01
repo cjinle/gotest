@@ -8,12 +8,15 @@ import (
 const TimeOut int64 = 200
 
 func TestOne(t *testing.T) {
+	fmt.Println("testing...")
 	// DownloadPic()
 	// UdpLogs()
 	// Tick()
 	// OpTime()
 	// fmt.Printf("%T %v", TimeOut, TimeOut)
-	fmt.Println(GetTimeStr())
+	// fmt.Println(GetTimeStr())
+	MyJson()
+	Struct2()
 }
 
 // func TestBuffer(t *testing.T) {

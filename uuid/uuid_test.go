@@ -6,6 +6,6 @@ import (
 )
 
 func TestOne(t *testing.T) {
-	uid := New()
+	uid := NewUUID()
 	fmt.Println(uid)
 }
