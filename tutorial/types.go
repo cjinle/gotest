@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"reflect"
 )
 
 // ----------- array ------------
@@ -68,6 +69,10 @@ func Struct2() {
 	fmt.Println(s)
 	fmt.Println(s.int)
 	fmt.Println(s.string)
+
+	var v interface{}
+	v = s
+	fmt.Println(v, reflect.TypeOf(v), v.(S).int, v.(S).string)
 }
 
 // ------------- interface ----------------
@@ -159,9 +164,25 @@ func MyJson() {
 	str := `{Title: "hello", year: 2020, Color: true, Actor: ["John", "Jim"]}`
 	// var v Movie
 	// v := &Movie{}
+	var v2 interface{}
+	v2 = &Movie{}
+	err = json.Unmarshal([]byte(str), v2)
+	fmt.Println("\n", str, v2)
+
+	var mov []Movie
+	err = json.Unmarshal(data, &mov)
+	if err != nil {
+		log.Fatalf("json unmarshal failed: %s", err)
+	}
+	fmt.Println(mov)
+
 	var v interface{}
-	v = v.(Movie)
-	err = json.Unmarshal([]byte(str), v)
-	fmt.Println("\n", str, v)
+	err = json.Unmarshal(data, &v)
+	if err != nil {
+		log.Fatalf("json unmarshal failed: %s", err)
+	}
+	// type Arr []interface{}
+	// fmt.Println(reflect.TypeOf(v), v.(Arr)[0])
+	fmt.Println(v.([]interface{})[0].(map[string]interface{})["Title"])
 
 }

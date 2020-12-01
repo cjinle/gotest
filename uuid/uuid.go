@@ -19,7 +19,7 @@ func (u *UUID) String() string {
 	return fmt.Sprintf("%d", hash.Sum64())
 }
 
-func New() *UUID {
+func NewUUID() *UUID {
 	r := rand.New(rand.NewSource(time.Now().UnixNano()))
 	return &UUID{
 		t: time.Now(),

@@ -32,8 +32,8 @@ func (this *BetRouter) Handle(request ziface.IRequest) {
 	}
 	betResult := &BetResult{}
 	betResult.Win, betResult.Ret = goslots.Bet(betInfo.Bet)
-	// fmt.Println("betResult = ", string(BetResult))
 	bytes, _ := json.Marshal(betResult)
+	fmt.Println("betResult = ", string(bytes))
 	err = request.GetConnection().SendMsg(0, []byte(bytes))
 	if err != nil {
 		fmt.Println(err)

@@ -9,6 +9,7 @@ const TimeOut int64 = 200
 
 func TestOne(t *testing.T) {
 	fmt.Println("test start ...")
+
 	// DownloadPic()
 	// UdpLogs()
 	// Tick()
@@ -16,6 +17,8 @@ func TestOne(t *testing.T) {
 	// fmt.Printf("%T %v", TimeOut, TimeOut)
 	// fmt.Println(GetTimeStr())
 	MyJson()
+
+	Struct2()
 }
 
 // func TestBuffer(t *testing.T) {
