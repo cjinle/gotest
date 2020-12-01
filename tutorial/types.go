@@ -1,8 +1,8 @@
 package tutorial
 
 import (
-	"fmt"
 	"encoding/json"
+	"fmt"
 	"log"
 )
 
@@ -21,6 +21,7 @@ func ArrOuput() {
 	// str = append(str[:], 'x')
 	// fmt.Println(str)
 }
+
 // --------- slice ---------
 func Slice() {
 	s := []string{"a", "b", "c"}
@@ -56,7 +57,6 @@ func Make() {
 	fmt.Println(usermap)
 }
 
-
 // ------------- struct ------------
 type S struct {
 	int
@@ -70,8 +70,7 @@ func Struct2() {
 	fmt.Println(s.string)
 }
 
-
-// ------------- interface ---------------- 
+// ------------- interface ----------------
 type I interface {
 	Info() string
 }
@@ -92,7 +91,6 @@ func InterfaceOuput() {
 	fmt.Println(i.Info())
 	fmt.Println(i)
 }
-
 
 // --------------------------
 
@@ -158,5 +156,12 @@ func MyJson() {
 	}
 	fmt.Printf("%s\n", data)
 
-}
+	str := `{Title: "hello", year: 2020, Color: true, Actor: ["John", "Jim"]}`
+	// var v Movie
+	// v := &Movie{}
+	var v interface{}
+	v = v.(Movie)
+	err = json.Unmarshal([]byte(str), v)
+	fmt.Println("\n", str, v)
 
+}

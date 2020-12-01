@@ -1,19 +1,21 @@
 package tutorial
 
 import (
-	"testing"
 	"fmt"
+	"testing"
 )
 
 const TimeOut int64 = 200
 
 func TestOne(t *testing.T) {
+	fmt.Println("test start ...")
 	// DownloadPic()
 	// UdpLogs()
 	// Tick()
 	// OpTime()
 	// fmt.Printf("%T %v", TimeOut, TimeOut)
-	fmt.Println(GetTimeStr())
+	// fmt.Println(GetTimeStr())
+	MyJson()
 }
 
 // func TestBuffer(t *testing.T) {
