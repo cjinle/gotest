@@ -3,11 +3,12 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/aceld/zinx/znet"
-	"github.com/cjinle/test/zinxslots"
 	"io"
 	"net"
 	"time"
+
+	"github.com/aceld/zinx/znet"
+	"github.com/cjinle/test/zinxslots"
 )
 
 func main() {
@@ -57,6 +58,10 @@ func main() {
 			var v interface{}
 			// var v zinxslots.BetResult
 			err = json.Unmarshal(msg.Data, &v)
+			if err != nil {
+				fmt.Println(string(msg.Data))
+				continue
+			}
 			fmt.Println(v, v.(map[string]interface{})["Ret"])
 			// fmt.Println(v)
 
