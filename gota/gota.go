@@ -2,7 +2,7 @@ package gota
 
 import (
 	"fmt"
-	// "strings"
+	"strings"
 
 	"github.com/go-gota/gota/dataframe"
 	"github.com/go-gota/gota/series"
@@ -15,5 +15,15 @@ func ExampleNew() {
 		series.New([]float64{3.0, 4.0}, series.Float, "COL.3"),
 	)
 
+	fmt.Println(df)
+}
+
+func ExampleCSV() {
+	in := `first_name,last_name,username
+"Rob","Pike",rob
+Ken,Thompson,ken
+"Robert","Griesemer","gri"
+`
+	df := dataframe.ReadCSV(strings.NewReader(in))
 	fmt.Println(df)
 }

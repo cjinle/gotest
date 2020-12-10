@@ -7,5 +7,6 @@ import (
 
 func TestExample(t *testing.T) {
 	fmt.Println("TestExample start ... ")
-	ExampleNew()
+	// ExampleNew()
+	ExampleCSV()
 }
