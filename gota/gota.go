@@ -14,5 +14,6 @@ func ExampleNew() {
 		series.New([]int{1, 2}, series.Int, "COL.2"),
 		series.New([]float64{3.0, 4.0}, series.Float, "COL.3"),
 	)
+
 	fmt.Println(df)
 }

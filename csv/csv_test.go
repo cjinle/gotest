@@ -5,9 +5,10 @@ import (
 	"testing"
 )
 
-func TestExampleReader(t *testing.T) {
+func TestExample(t *testing.T) {
 	log.Println("test start ... ")
-	ExampleReader()
+	// ExampleReader()
+	ExampleWriter()
 }
 
 func TestOne(t *testing.T) {
