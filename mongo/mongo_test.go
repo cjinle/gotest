@@ -1,14 +1,20 @@
 package mongo
 
 import (
+	// "log"
 	"testing"
 )
 
 func TestFind(t *testing.T) {
-	Find()
+	// Find()
 	// Insert()
 	// Update()
-	// Delete()
+	Delete()
+
+	// r := []Result{
+	// 	Result{Name: "zhangsan", Sex: 1},
+	// }
+	// log.Println(r)
 
 	Close()
 }
