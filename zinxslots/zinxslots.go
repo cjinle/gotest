@@ -38,7 +38,10 @@ func (this *BetRouter) Handle(request ziface.IRequest) {
 	}
 	id, _ := request.GetConnection().GetProperty("id")
 	if money.(int) < betInfo.Bet {
-		fmt.Println("id=", id, ", money=", money)
+		errStr := fmt.Sprintf("id=%d, money=%d", id, money)
+		fmt.Println(errStr)
+		request.GetConnection().SendMsg(1, []byte(errStr))
+		request.GetConnection().Stop()
 		return
 	}
 	request.GetConnection().SetProperty("money", money.(int)-betInfo.Bet)
@@ -71,7 +74,6 @@ func DoConnectionBegin(conn ziface.IConnection) {
 }
 
 func DoConnectionLost(conn ziface.IConnection) {
-	//在连接销毁之前，查询conn的Name，Home属性
 	if id, err := conn.GetProperty("id"); err == nil {
 		fmt.Println("id = ", id)
 	}
