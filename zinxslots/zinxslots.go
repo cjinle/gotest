@@ -14,12 +14,12 @@ type BetRouter struct {
 }
 
 type BetInfo struct {
-	Bet int `json:bet`
+	Bet int `json:"bet"`
 }
 
 type BetResult struct {
-	Win int   `json:win`
-	Ret []int `json:ret`
+	Win int   `json:"win"`
+	Ret []int `json:"ret"`
 }
 
 func (this *BetRouter) Handle(request ziface.IRequest) {

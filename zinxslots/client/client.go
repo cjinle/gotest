@@ -23,7 +23,7 @@ func main() {
 
 	for {
 		dp := znet.NewDataPack()
-		betInfo := &zinxslots.BetInfo{5000}
+		betInfo := &zinxslots.BetInfo{Bet: 5000}
 		bytes, _ := json.Marshal(betInfo)
 		msg, _ := dp.Pack(znet.NewMsgPackage(0, []byte(bytes)))
 		_, err := conn.Write(msg)

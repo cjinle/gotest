@@ -7,7 +7,7 @@ import (
 
 const TABLENUM int = 100
 
-type MoneyServer interface {
+type xxx interface {
 	InitData()
 	GetTable(uid int) int
 	AddMoney(uid int, num int) (int, error)
@@ -22,7 +22,7 @@ type UserInfo struct {
 type UserList [TABLENUM]map[int]*UserInfo
 
 func MoneyServer() {
-	var ms MoneyServer = &UserList{}
+	var ms IMoneyServer = &UserList{}
 	ms.InitData()
 	// test
 	for i := 0; i < 999; i++ {
