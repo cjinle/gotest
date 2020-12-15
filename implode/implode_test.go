@@ -1,28 +1,15 @@
-package main
+package implode
 
 import (
 	"crypto/rand"
 	"fmt"
 	"strings"
+	"testing"
 
 	"github.com/cjinle/test/utils"
 )
 
-// Implode str...
-func Implode(sep string, v ...interface{}) string {
-	data := make([]string, len(v))
-	for idx, val := range v {
-		data[idx] = fmt.Sprint(val)
-	}
-	return strings.Join(data, sep)
-}
-
-// Explode sth...
-func Explode(seq, str string) []string {
-	return []string{"hello", "word"}
-}
-
-func main() {
+func TestImplode(t *testing.T) {
 	fmt.Println(utils.Md5Sum("123456"))
 
 	A := []int{1, 2, 3}
@@ -34,8 +21,12 @@ func main() {
 	utils.Assert(1 == 1, "1 == 1")
 	utils.Assert(false == false, "false is false")
 
-
 	str := "xxx"
 	str = strings.TrimRight(str, "|")
-	strings.Split(str, "|") 
+	strings.Split(str, "|")
+}
+
+func TestImplode2(t *testing.T) {
+	Run()
+
 }

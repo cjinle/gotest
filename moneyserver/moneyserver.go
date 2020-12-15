@@ -7,7 +7,7 @@ import (
 
 const TABLENUM int = 100
 
-type xxx interface {
+type IMoneyServer interface {
 	InitData()
 	GetTable(uid int) int
 	AddMoney(uid int, num int) (int, error)
