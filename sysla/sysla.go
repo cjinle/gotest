@@ -12,10 +12,10 @@ import (
 )
 
 type AppConf struct {
-	RedisIp   string        `json:redisip`
-	RedisPort int           `json:redisport`
-	Host      string        `json:host`
-	Duration  time.Duration `json:duration`
+	RedisIp   string        `json:"redisip"`
+	RedisPort int           `json:"redisport"`
+	Host      string        `json:"host"`
+	Duration  time.Duration `json:"duration"`
 }
 
 func Run() {
