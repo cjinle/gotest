@@ -5,7 +5,11 @@ import (
 )
 
 func TestGetCfg(t *testing.T) {
-	GetCfg()
-	// ParseGceCfg()
-	// GetCfg2()
+	// getCfg3()
+	parseGceCfg()
+	// getCfg2()
+}
+
+func TestOne(t *testing.T) {
+
 }
