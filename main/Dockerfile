@@ -1,4 +1,4 @@
-FROM golang:1.15.5-alpine AS build
+FROM golang:latest AS build
 
 WORKDIR /go/src/github.com/cjinle/test/main
 
