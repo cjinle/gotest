@@ -6,9 +6,9 @@ import (
 )
 
 func TestFind(t *testing.T) {
-	// Find()
-	// Insert()
-	// Update()
+	Find()
+	Insert()
+	Update()
 	Delete()
 
 	// r := []Result{
