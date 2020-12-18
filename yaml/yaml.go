@@ -141,6 +141,10 @@ func parseGceCfg() {
 	CheckErr(err)
 	Print(v, v.ProxyGroup[0])
 
+	if v.Dns.Enable {
+		log.Println("dns is enable")
+	}
+
 	DivLine("done")
 
 }
