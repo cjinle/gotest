@@ -1,6 +1,7 @@
 package csv
 
 import (
+	"fmt"
 	"log"
 	"testing"
 )
@@ -21,5 +22,11 @@ func TestOne(t *testing.T) {
 	case float64:
 		log.Println(v)
 	}
-	// log.Println(v.(type))
+	var xx byte
+	xx = byte(12)
+	xx += byte(1)
+	log.Printf("%T, %v", xx, xx)
+
+	yy := uint32(99)
+	log.Println(yy, fmt.Sprint(yy))
 }

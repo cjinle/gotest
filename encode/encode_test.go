@@ -7,5 +7,8 @@ import (
 func TestSth(t *testing.T) {
 	// AesEncode()
 	// ByteEncode()
-	BinPacks()
+	// BinPacks()
+	// GobEncode()
+	JsonEncode()
+	JsonDecode()
 }
