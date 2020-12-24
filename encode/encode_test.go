@@ -12,3 +12,10 @@ func TestSth(t *testing.T) {
 	JsonEncode()
 	JsonDecode()
 }
+
+func BenchmarkSth(b *testing.B) {
+	for n := 0; n < b.N; n++ {
+		JsonEncode()
+		JsonDecode()
+	}
+}
