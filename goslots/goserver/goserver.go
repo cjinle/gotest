@@ -3,16 +3,17 @@ package main
 import (
 	"fmt"
 	"net"
-	"github.com/cjinle/goslots"
-	"github.com/cjinle/goslots/pb"
+
+	"github.com/cjinle/test/goslots"
+	"github.com/cjinle/test/goslots/pb"
 	"github.com/golang/protobuf/proto"
 )
 
 type User struct {
-	Id int32
+	Id    int32
 	Money int32
-	Win int32
-	Lose int32
+	Win   int32
+	Lose  int32
 }
 
 var ConnMap map[string]net.Conn
@@ -41,7 +42,6 @@ func main() {
 	}
 }
 
-
 func handleConnection(conn net.Conn, user *pb.User) {
 	conn.Write([]byte("Welcome: " + user.String()))
 	for {
@@ -61,7 +61,7 @@ func handleConnection(conn net.Conn, user *pb.User) {
 			fmt.Printf("ID: %d, not enough money.\n", user.Id, bet.Money)
 			fmt.Println(user.String())
 			conn.Close()
-			return 
+			return
 		}
 		user.Money -= bet.Money
 		win, value := goslots.Bet(int(bet.Money))
@@ -73,10 +73,10 @@ func handleConnection(conn net.Conn, user *pb.User) {
 			user.Lose++
 		}
 		result := &pb.Result{
-			Ret: 0,
-			Win: int32(win),
+			Ret:   0,
+			Win:   int32(win),
 			Value: []int32{int32(value[0]), int32(value[1]), int32(value[2])},
-			User: user,
+			User:  user,
 		}
 		bytes, err := proto.Marshal(result)
 		if err != nil {
