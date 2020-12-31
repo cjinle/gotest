@@ -4,7 +4,6 @@ import (
 	"log"
 	"math/rand"
 	"net/rpc"
-	"net/url"
 	"time"
 )
 
@@ -17,11 +16,15 @@ type Quotient struct {
 }
 
 func main() {
-	urlInfo, err := url.Parse("unix:///tmp/rpc2.sock")
-	if err != nil {
-		log.Fatal(err)
-	}
-	client, err := rpc.Dial(urlInfo.Scheme, urlInfo.Path)
+	// urlInfo, err := url.Parse("unix:///tmp/rpc2.sock")
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
+	// client, err := rpc.Dial(urlInfo.Scheme, urlInfo.Path)
+	// urlInfo, err := url.Parse("tcp://127.0.0.1:8888")
+	// log.Println(urlInfo.Host, urlInfo.Scheme, err)
+	// os.Exit(0)
+	client, err := rpc.Dial("tcp", "127.0.0.1:8888")
 	if err != nil {
 		log.Fatal(err)
 	}

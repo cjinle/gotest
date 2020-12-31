@@ -36,7 +36,8 @@ func RpcServer() {
 	rpcServer := rpc.NewServer()
 	arith := new(Arith)
 	rpcServer.Register(arith)
-	listen, err := net.Listen("unix", "/tmp/rpc2.sock")
+	// listen, err := net.Listen("unix", "/tmp/rpc2.sock")
+	listen, err := net.Listen("tcp", "127.0.0.1:9999")
 	if err != nil {
 		log.Fatal("listen error ", err)
 	}
