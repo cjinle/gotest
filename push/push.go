@@ -19,9 +19,11 @@ type API struct {
 
 // Config 配置
 type Config struct {
-	Redis    string      `yaml:"redis"`
-	CacheKey string      `yaml:"cache-key"`
-	API      map[int]API `yaml:"api"`
+	Redis         string      `yaml:"redis"`
+	CacheKey      string      `yaml:"cache-key"`
+	AndroidWorker int         `yaml:"android-worker"`
+	IOSWorker     int         `yaml:"ios-worker"`
+	API           map[int]API `yaml:"api"`
 }
 
 // Push data struct
@@ -31,7 +33,30 @@ type Push struct {
 	config    *Config
 }
 
+// Notification 推送内容
+type Notification struct {
+	API     int      `json:"api"`
+	Tokens  []string `json:"tokens"`
+	Content string   `json:"content"`
+}
+
+// AndroidClient 安卓推送客户端
+type AndroidClient struct {
+	ID int
+}
+
+// IOSClient IOS推送客户端
+type IOSClient struct {
+	ID int
+}
+
+const (
+	maxWorkNum = 50
+)
+
 var err error
+var androidClients chan *AndroidClient
+var iosClients chan *IOSClient
 
 func init() {
 	// file, err := os.OpenFile("push.log", os.O_CREATE|os.O_RDWR|os.O_APPEND, 0755)
@@ -53,19 +78,15 @@ func New() *Push {
 	if err != nil {
 		log.Fatal(err)
 	}
-	// conn, err := redis.Dial("tcp", push.config.Redis)
-	// if err != nil {
-	// 	log.Fatal(err)
-	// }
-	// push.redis = conn
 	push.redisPool = redis.NewPool(func() (redis.Conn, error) {
-		con, err := redis.Dial("tcp", "127.0.0.1:6379")
+		con, err := redis.Dial("tcp", push.config.Redis)
 		if err != nil {
 			return nil, err
 		}
 		return con, nil
 	}, 2)
 
+	go push.StartWorkers()
 	go push.Pop()
 	go push.AddTestData()
 	return push
@@ -74,6 +95,25 @@ func New() *Push {
 // Start 开启推送
 func (push *Push) Start() {
 	select {}
+}
+
+// StartWorkers 开启处理队列worker
+func (push *Push) StartWorkers() {
+	androidClients = make(chan *AndroidClient, maxWorkNum)
+	if push.config.AndroidWorker > maxWorkNum {
+		push.config.AndroidWorker = maxWorkNum
+	}
+	for i := 0; i < push.config.AndroidWorker; i++ {
+		androidClients <- &AndroidClient{ID: i}
+	}
+
+	iosClients = make(chan *IOSClient, maxWorkNum)
+	if push.config.IOSWorker > maxWorkNum {
+		push.config.IOSWorker = maxWorkNum
+	}
+	for i := 0; i < push.config.IOSWorker; i++ {
+		iosClients <- &IOSClient{ID: i}
+	}
 }
 
 // Pop 从缓存读取任务数据
@@ -115,12 +155,11 @@ func (push *Push) AddTestData() {
 	}
 }
 
-type pushData struct {
-	TermID    string `json:"termid"`
-	ContentID string `json:"contentid"`
-	Token     string `json:"token"`
-}
-
 func genJSON() ([]byte, error) {
-	return json.Marshal(&pushData{TermID: "2020-12-31", ContentID: "yesterday", Token: "xxxxxx"})
+	notice := &Notification{
+		API:     0x01001200,
+		Tokens:  []string{"aaaaa", "bbbb", "ccc"},
+		Content: "test message...",
+	}
+	return json.Marshal(notice)
 }

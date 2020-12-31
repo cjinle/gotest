@@ -1,9 +1,9 @@
 redis: 127.0.0.1:6379
 cache-key: default
+android-worker: 10
+ios-worker: 5 
 api:
   0x01001200:
     key: xxxxxx
-    tasknum: 1
   0x01001300:
     key: yyyyy
-    tasknum: 1
