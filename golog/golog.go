@@ -1,4 +1,4 @@
-// 日志操作，按天分割
+// Package golog 日志操作，按天分割
 package golog
 
 import (
