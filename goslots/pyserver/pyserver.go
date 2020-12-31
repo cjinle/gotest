@@ -4,15 +4,15 @@ import (
 	"fmt"
 	"net"
 	"strconv"
-	"github.com/cjinle/goslots"
 
+	"github.com/cjinle/test/goslots"
 )
 
 type User struct {
-	Id int
+	Id    int
 	Money int
-	Win int
-	Lose int
+	Win   int
+	Lose  int
 }
 
 var ConnMap map[string]net.Conn
@@ -41,7 +41,6 @@ func main() {
 	}
 }
 
-
 func handleConnection(conn net.Conn, user *User) {
 	conn.Write([]byte("Welcome: " + UserString(user)))
 	for {
@@ -53,9 +52,9 @@ func handleConnection(conn net.Conn, user *User) {
 		bet, _ := strconv.Atoi(string(buffer[:n]))
 		fmt.Printf("ID: %d, Bet: %d\n", user.Id, bet)
 		if bet > user.Money {
-			fmt.Printf("ID: %d, not enough money.\n", user.Id, bet)
+			fmt.Printf("ID: %d, %d not enough money.\n", user.Id, bet)
 			fmt.Println(UserString(user))
-			return 
+			return
 		}
 		user.Money -= bet
 		win, value := goslots.Bet(bet)
@@ -73,7 +72,6 @@ func handleConnection(conn net.Conn, user *User) {
 func UserString(user *User) string {
 	return fmt.Sprintf("ID: %d, Money: %d, Win: %d, Lose: %d", user.Id, user.Money, user.Win, user.Lose)
 }
-
 
 func CheckError(err error) {
 	if err != nil {

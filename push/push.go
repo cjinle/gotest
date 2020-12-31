@@ -1,6 +1,7 @@
 package push
 
 import (
+	"encoding/json"
 	"io/ioutil"
 	"log"
 	"math/rand"
@@ -25,8 +26,9 @@ type Config struct {
 
 // Push data struct
 type Push struct {
-	redis  redis.Conn
-	config *Config
+	// redis     redis.Conn
+	redisPool *redis.Pool
+	config    *Config
 }
 
 var err error
@@ -51,11 +53,19 @@ func New() *Push {
 	if err != nil {
 		log.Fatal(err)
 	}
-	conn, err := redis.Dial("tcp", push.config.Redis)
-	if err != nil {
-		log.Fatal(err)
-	}
-	push.redis = conn
+	// conn, err := redis.Dial("tcp", push.config.Redis)
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
+	// push.redis = conn
+	push.redisPool = redis.NewPool(func() (redis.Conn, error) {
+		con, err := redis.Dial("tcp", "127.0.0.1:6379")
+		if err != nil {
+			return nil, err
+		}
+		return con, nil
+	}, 2)
+
 	go push.Pop()
 	go push.AddTestData()
 	return push
@@ -68,32 +78,49 @@ func (push *Push) Start() {
 
 // Pop 从缓存读取任务数据
 func (push *Push) Pop() {
+	conn := push.redisPool.Get()
+	defer conn.Close()
 	for {
-		str, err := redis.String(push.redis.Do("RPOP", push.config.CacheKey))
+		str, err := redis.Bytes(conn.Do("RPOP", push.config.CacheKey))
 
 		if err != nil {
-			pong, _ := push.redis.Do("PING")
+			pong, _ := conn.Do("PING")
 			log.Println(pong, err)
 			time.Sleep(1 * time.Second)
 			continue
 		}
-		log.Println(str, time.Now().Unix())
-		time.Sleep(500 * time.Microsecond)
+		log.Println("--->>>", string(str), time.Now().Unix())
+		time.Sleep(10000 * time.Microsecond)
 	}
 }
 
 // AddTestData 加数据
 func (push *Push) AddTestData() {
+	conn := push.redisPool.Get()
+	defer conn.Close()
 	rand.Seed(time.Now().UnixNano())
 	i := 0
 	for {
-		push.redis.Do("LPUSH", push.config.CacheKey, rand.Intn(9999999))
+		value, _ := genJSON()
+		log.Println(value)
+		conn.Do("LPUSH", push.config.CacheKey, string(value))
 		i++
 		if i > 10000 {
 			time.Sleep(time.Minute)
 			i = 0
 			continue
 		}
-		time.Sleep(500 * time.Microsecond)
+		log.Println("<<<---", value)
+		time.Sleep(10000 * time.Microsecond)
 	}
+}
+
+type pushData struct {
+	TermID    string `json:"termid"`
+	ContentID string `json:"contentid"`
+	Token     string `json:"token"`
+}
+
+func genJSON() ([]byte, error) {
+	return json.Marshal(&pushData{TermID: "2020-12-31", ContentID: "yesterday", Token: "xxxxxx"})
 }

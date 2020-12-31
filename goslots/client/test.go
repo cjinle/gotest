@@ -4,23 +4,23 @@ import (
 	"fmt"
 	"net"
 	"time"
-	// "github.com/cjinle/goslots"
-	"github.com/cjinle/goslots/pb"
-	"github.com/golang/protobuf/proto"
 
+	// "github.com/cjinle/goslots"
+	"github.com/cjinle/test/goslots/pb"
+	"github.com/golang/protobuf/proto"
 )
 
 func main() {
 	fmt.Println("slots client start ... ")
 	conn, err := net.Dial("tcp", "127.0.0.1:1234")
 	CheckError(err)
-	
+
 	var buf [1024]byte
 	n, err := conn.Read(buf[0:])
 	CheckError(err)
 	fmt.Println(n, string(buf[:n]))
 
-	bet := &pb.Bet{50000}
+	bet := &pb.Bet{Money: 50000}
 	bytes, err := proto.Marshal(bet)
 	CheckError(err)
 	for {
@@ -40,6 +40,7 @@ func main() {
 	}
 }
 
+// CheckError  func
 func CheckError(err error) {
 	if err != nil {
 		panic(err)

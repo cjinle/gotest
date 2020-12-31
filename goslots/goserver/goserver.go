@@ -3,18 +3,21 @@ package main
 import (
 	"fmt"
 	"net"
-	"github.com/cjinle/goslots"
-	"github.com/cjinle/goslots/pb"
+
+	"github.com/cjinle/test/goslots"
+	"github.com/cjinle/test/goslots/pb"
 	"github.com/golang/protobuf/proto"
 )
 
+// User struct
 type User struct {
-	Id int32
+	ID    int32
 	Money int32
-	Win int32
-	Lose int32
+	Win   int32
+	Lose  int32
 }
 
+// ConnMap map
 var ConnMap map[string]net.Conn
 
 func main() {
@@ -23,7 +26,7 @@ func main() {
 	netListen, err := net.Listen("tcp", ":1234")
 	CheckError(err)
 	defer netListen.Close()
-	var startId int32 = 1
+	var startID int32 = 1
 
 	fmt.Println("Waiting for clients")
 	for {
@@ -32,15 +35,14 @@ func main() {
 			continue
 		}
 
-		user := &pb.User{startId, 500000, 0, 0}
-		startId++
+		user := &pb.User{Id: startID, Money: 500000, Win: 0, Lose: 0}
+		startID++
 
 		fmt.Println(conn.RemoteAddr().String(), " tcp connect success")
 		ConnMap[conn.RemoteAddr().String()] = conn
 		go handleConnection(conn, user)
 	}
 }
-
 
 func handleConnection(conn net.Conn, user *pb.User) {
 	conn.Write([]byte("Welcome: " + user.String()))
@@ -58,10 +60,10 @@ func handleConnection(conn net.Conn, user *pb.User) {
 
 		fmt.Printf("ID: %d, Bet: %d\n", user.Id, bet.Money)
 		if bet.Money > user.Money {
-			fmt.Printf("ID: %d, not enough money.\n", user.Id, bet.Money)
+			fmt.Printf("ID: %d, %d not enough money.\n", user.Id, bet.Money)
 			fmt.Println(user.String())
 			conn.Close()
-			return 
+			return
 		}
 		user.Money -= bet.Money
 		win, value := goslots.Bet(int(bet.Money))
@@ -73,10 +75,10 @@ func handleConnection(conn net.Conn, user *pb.User) {
 			user.Lose++
 		}
 		result := &pb.Result{
-			Ret: 0,
-			Win: int32(win),
+			Ret:   0,
+			Win:   int32(win),
 			Value: []int32{int32(value[0]), int32(value[1]), int32(value[2])},
-			User: user,
+			User:  user,
 		}
 		bytes, err := proto.Marshal(result)
 		if err != nil {
@@ -86,6 +88,7 @@ func handleConnection(conn net.Conn, user *pb.User) {
 	}
 }
 
+// CheckError func
 func CheckError(err error) {
 	if err != nil {
 		panic(err)
