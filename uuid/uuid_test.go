@@ -8,4 +8,6 @@ import (
 func TestOne(t *testing.T) {
 	uid := NewUUID()
 	fmt.Println(uid)
+
+	NewGoogleUUID()
 }

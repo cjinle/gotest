@@ -17,13 +17,20 @@ type Quotient struct {
 
 func main() {
 	// urlInfo, err := url.Parse("unix:///tmp/rpc2.sock")
+<<<<<<< HEAD
+=======
+	// urlInfo, err := url.Parse("unix:///tmp/gateway.sock")
+>>>>>>> 74ce9799a2895c64ad848358020e8c90a14deb56
 	// if err != nil {
 	// 	log.Fatal(err)
 	// }
 	// client, err := rpc.Dial(urlInfo.Scheme, urlInfo.Path)
+<<<<<<< HEAD
 	// urlInfo, err := url.Parse("tcp://127.0.0.1:8888")
 	// log.Println(urlInfo.Host, urlInfo.Scheme, err)
 	// os.Exit(0)
+=======
+>>>>>>> 74ce9799a2895c64ad848358020e8c90a14deb56
 	client, err := rpc.Dial("tcp", "127.0.0.1:8888")
 	if err != nil {
 		log.Fatal(err)

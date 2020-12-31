@@ -6,7 +6,7 @@ import (
 
 	"github.com/aceld/zinx/ziface"
 	"github.com/aceld/zinx/znet"
-	"github.com/cjinle/goslots"
+	"github.com/cjinle/test/goslots"
 )
 
 type BetRouter struct {

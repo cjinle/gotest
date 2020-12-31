@@ -3,8 +3,11 @@ package uuid
 import (
 	"fmt"
 	"hash/fnv"
+	"log"
 	"math/rand"
 	"time"
+
+	"github.com/google/uuid"
 )
 
 type UUID struct {
@@ -25,4 +28,9 @@ func NewUUID() *UUID {
 		t: time.Now(),
 		r: r.Int63(),
 	}
+}
+
+func NewGoogleUUID() {
+	id := uuid.New()
+	log.Println(id)
 }
