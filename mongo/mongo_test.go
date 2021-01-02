@@ -7,7 +7,7 @@ import (
 
 func TestFind(t *testing.T) {
 	// Find()
-	// Insert()
+	Insert()
 	// Update()
 	Delete()
 
