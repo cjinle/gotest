@@ -6,7 +6,7 @@ import (
 
 	"github.com/aceld/zinx/ziface"
 	"github.com/aceld/zinx/znet"
-	"github.com/cjinle/goslots"
+	"github.com/cjinle/test/goslots"
 )
 
 type BetRouter struct {
@@ -14,12 +14,12 @@ type BetRouter struct {
 }
 
 type BetInfo struct {
-	Bet int `json:bet`
+	Bet int `json:"bet"`
 }
 
 type BetResult struct {
-	Win int   `json:win`
-	Ret []int `json:ret`
+	Win int   `json:"win"`
+	Ret []int `json:"ret"`
 }
 
 func (this *BetRouter) Handle(request ziface.IRequest) {

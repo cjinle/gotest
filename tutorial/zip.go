@@ -7,6 +7,7 @@ import (
 	"os"
 )
 
+// Zip test file
 func Zip() {
 	files := []string{"aa", "1.txt"}
 	output := "out.zip"

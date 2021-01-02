@@ -1,0 +1,94 @@
+﻿
+port: 7890
+socks-port: 7891
+redir-port: 7892
+allow-lan: false
+mode: Rule
+log-level: info
+external-controller: '0.0.0.0:9090'
+secret: ''
+
+dns:
+  enable: true
+  nameserver:
+    - 1.2.4.8
+    - 114.114.114.114
+    - 223.5.5.5
+    - tls://dns.rubyfish.cn:853
+  fallback:
+    - tls://1.0.0.1:853
+    - tls://dns.google:853
+
+cfw-bypass:
+    - qq.com
+    - taobao.com
+    - music.163.com
+    - localhost
+    - 127.*
+    - 10.*
+    - 172.16.*
+    - <local>
+cfw-latency-timeout: 5000
+
+# 代理节点
+Proxy:
+
+- name: "gce-tw"
+  type: trojan
+  server: gce-sg.cjinle.xyz
+  port: 443
+  password: 123456
+
+
+###############################################################配置分割线
+
+# 代理组策略
+Proxy Group:
+
+# url-test 通过指定的 URL 测试并选择延迟最低的节点
+- name: "自动节点选择"
+  type: url-test
+  proxies:
+    - "gce-tw"
+
+  url: 'http://www.gstatic.com/generate_204'
+  interval: 300
+# 代理节点选择
+- name: "PROXY"
+  type: select
+  proxies:
+    - "自动节点选择"
+    - "gce-tw"
+# 白名单模式 PROXY，黑名单模式 DIRECT
+- name: "Final"
+  type: select
+  proxies:
+    - "PROXY"
+    - "DIRECT"
+# 大陆流媒体面向港澳台限定服务
+- name: "HKMTMedia"
+  type: select
+  proxies:
+    - "DIRECT"
+    - "gce-tw"
+# 运营商及声名狼藉网站劫持
+- name: "Hijacking"
+  type: select
+  proxies:
+    - "REJECT"
+    - "DIRECT"
+# 规则
+Rule:
+# Unbreak
+# > Google
+- DOMAIN-SUFFIX,googletraveladservices.com,DIRECT
+- DOMAIN,dl.google.com,DIRECT
+- DOMAIN,mtalk.google.com,DIRECT
+
+# Internet Service Providers Hijacking 运营商劫持
+- DOMAIN-SUFFIX,17gouwuba.com,Hijacking
+- DOMAIN-SUFFIX,186078.com,Hijacking
+- DOMAIN-SUFFIX,189zj.cn,Hijacking
+- DOMAIN-SUFFIX,285680.com,Hijacking
+- DOMAIN-SUFFIX,3721zh.com,Hijacking
+- DOMAIN-SUFFIX,4336wang.cn,Hijacking

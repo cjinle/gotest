@@ -7,7 +7,7 @@ import (
 )
 
 type MyData struct {
-	r  *io.Reader
+	r *io.Reader
 }
 
 func (md *MyData) Read(p []byte) (int, error) {
@@ -16,4 +16,3 @@ func (md *MyData) Read(p []byte) (int, error) {
 	return 0, nil
 	// return 0, errors.New("EOF")
 }
-

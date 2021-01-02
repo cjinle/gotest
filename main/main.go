@@ -17,5 +17,4 @@ func main() {
 	aa = 0x1001
 	bb := int(017)
 	fmt.Println(aa, aa == 4097, bb)
-
 }

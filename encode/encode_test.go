@@ -7,5 +7,15 @@ import (
 func TestSth(t *testing.T) {
 	// AesEncode()
 	// ByteEncode()
-	BinPacks()
+	// BinPacks()
+	// GobEncode()
+	JsonEncode()
+	JsonDecode()
+}
+
+func BenchmarkSth(b *testing.B) {
+	for n := 0; n < b.N; n++ {
+		JsonEncode()
+		JsonDecode()
+	}
 }

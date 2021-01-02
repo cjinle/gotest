@@ -3,9 +3,9 @@ package encode
 import (
 	"bytes"
 	"encoding/binary"
+	"encoding/hex"
 	"fmt"
 	"math/rand"
-	"encoding/hex"
 )
 
 func BinPacks() {
@@ -21,4 +21,5 @@ func BinPacks() {
 	binary.Write(buff, binary.BigEndian, uint32(2494))
 	fmt.Printf("%s", hex.Dump(buff.Bytes()))
 	fmt.Println(buff.Bytes(), random, binary.Size(byte(0x10)))
+
 }

@@ -3,15 +3,14 @@ package client
 import (
 	"bytes"
 	"encoding/binary"
+	"encoding/hex"
 	"encoding/json"
 	"fmt"
-	"math/rand"
-	"encoding/hex"
-	"net"
 	"io"
+	"math/rand"
+	"net"
 	"time"
 )
-
 
 type Client struct {
 	conn *net.TCPConn
@@ -33,12 +32,13 @@ func (client *Client) Close() {
 func (client *Client) GetGameInfo(mid uint32) interface{} {
 	// c, _ := net.Dial("tcp", "192.168.100.107:8051")
 	// defer c.Close()
+
 	conn := client.conn
 	buff := bytes.NewBuffer([]byte{})
 	binary.Write(buff, binary.BigEndian, uint32(mid))
 	dp := DataPack(buff, 0x1004)
 	fmt.Printf("%s", hex.Dump(dp))
-	
+
 	n, err := conn.Write(dp)
 	fmt.Println(n, err)
 
@@ -83,7 +83,7 @@ func (client *Client) UpdateMoney(mid, mode, num int) interface{} {
 	binary.Write(buff, binary.BigEndian, uint32(1))
 	binary.Write(buff, binary.BigEndian, uint64(num))
 	binary.Write(buff, binary.BigEndian, uint32(mode))
-	
+
 	dp := DataPack(buff, 0x1005)
 	fmt.Printf("%s", hex.Dump(dp))
 
@@ -132,7 +132,6 @@ func DataUnpack(buff *bytes.Buffer) interface{} {
 	}
 	return v
 }
-
 
 func DataPack(buff *bytes.Buffer, cmd int) []byte {
 	ret := bytes.NewBuffer([]byte{})

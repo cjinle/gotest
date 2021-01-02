@@ -1,0 +1,10 @@
+redis: 127.0.0.1:6379
+cache-key-pre: default
+timeout: 10
+api:
+  0x01001200:
+    key: xxxxxx
+    worker: 10
+  0x01001300:
+    key: yyyyy
+    worker: 10
