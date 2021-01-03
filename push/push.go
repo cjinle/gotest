@@ -166,7 +166,7 @@ func (push *Push) Pop(api int) {
 		if err != nil {
 			log.Printf("redis message %x %v", api, err)
 			conn.Do("PING")
-			time.Sleep(time.Duration(rand.Intn(30)) * time.Second)
+			time.Sleep(1 * time.Second)
 			continue
 		}
 		var msg Message
