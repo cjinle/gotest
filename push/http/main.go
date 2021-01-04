@@ -11,6 +11,9 @@ type Param struct {
 	Content string `json:"content"`
 }
 
+// Push struct
+type Push struct{}
+
 func main() {
 	log.Println("push json-rpc")
 	// ioutil.ReadAll()
