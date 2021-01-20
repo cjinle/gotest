@@ -16,9 +16,10 @@ func TestOne(t *testing.T) {
 	// OpTime()
 	// fmt.Printf("%T %v", TimeOut, TimeOut)
 	// fmt.Println(GetTimeStr())
-	MyJson()
+	// MyJson()
 
-	Struct2()
+	// Struct2()
+	fmt.Println(GetTimeStr2())
 }
 
 // func TestBuffer(t *testing.T) {

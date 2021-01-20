@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
+	"time"
 )
 
 // Param 参数
@@ -30,14 +31,17 @@ func main() {
 	http.HandleFunc("/", DefaultHandle)
 	http.HandleFunc("/push", func(w http.ResponseWriter, r *http.Request) {
 		// log.Println(r.URL, r.FormValue("foo"), r.UserAgent())
-		err = r.ParseForm()
-		if err != nil {
-			log.Println(err)
-		}
-		log.Println("--->", r.FormValue("foo"), r.PostForm, r.PostForm["api"][0])
+		// err = r.ParseForm()
+		// if err != nil {
+		// 	log.Println(err)
+		// }
+		// log.Println("--->", r.FormValue("foo"), r.PostForm)
 		enc := json.NewEncoder(w)
-		res := &Result{Ret: 0}
-		enc.Encode(res)
+		// res := &Result{Ret: 0}
+		// enc.Encode(res)
+		now := int(time.Now().Unix())
+		log.Println(now)
+		enc.Encode(&Result{Ret: now})
 	})
 	http.ListenAndServe("0.0.0.0:6060", nil)
 }

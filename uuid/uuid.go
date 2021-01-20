@@ -6,8 +6,10 @@ import (
 	"log"
 	"math/rand"
 	"time"
+	"hash/crc32"
 
 	"github.com/google/uuid"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 type UUID struct {
@@ -33,4 +35,19 @@ func NewUUID() *UUID {
 func NewGoogleUUID() {
 	id := uuid.New()
 	log.Println(id)
+}
+
+func NewObjectID() uint64 {
+	objectID := primitive.NewObjectID().Hex()
+	fmt.Println(objectID)
+	id32 := crc32.ChecksumIEEE([]byte(objectID))
+	fmt.Println(id32)
+	id64 := uint64(1e14)
+	now := time.Now()
+	id64 += uint64(id32)
+	id64 += uint64(now.YearDay()) * 1e10
+	fmt.Println(now.YearDay())
+	id64 += uint64(now.Year()%100) * 1e10
+	fmt.Println(now.Year())
+	return id64
 }

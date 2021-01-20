@@ -10,4 +10,6 @@ func TestOne(t *testing.T) {
 	fmt.Println(uid)
 
 	NewGoogleUUID()
+
+	fmt.Println(NewObjectID())
 }

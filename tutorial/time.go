@@ -29,3 +29,7 @@ func GetTimeStr() string {
 	ret := now.Format("2006-01-02 15:04:05")
 	return ret
 }
+
+func GetTimeStr2() string {
+	return time.Now().Format("20060102")
+}
