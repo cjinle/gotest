@@ -17,4 +17,14 @@ func main() {
 	aa = 0x1001
 	bb := int(017)
 	fmt.Println(aa, aa == 4097, bb)
+
+
+	var ch chan struct{}
+	ch = make(chan struct{})
+	go func(ch chan struct{}){
+		ch <- struct{}{}
+	}(ch)
+	fmt.Println(<-ch)
+	fmt.Println("done")
+	// select{}
 }

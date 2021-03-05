@@ -5,7 +5,6 @@ import (
 	"testing"
 )
 
-
 func TestBet(t *testing.T) {
 	//fmt.Println(Lucky())
 	stat := make(map[int]int)
@@ -17,7 +16,7 @@ func TestBet(t *testing.T) {
 		i++
 	}
 	for k, v := range stat {
-		fmt.Println(k, v, float32(v)/float32(maxNum))	
+		fmt.Println(k, v, float32(v)/float32(maxNum))
 	}
 	// fmt.Println(stat)
 }
