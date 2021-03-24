@@ -7,7 +7,7 @@ package pb;
 
 service Foo {
 	rpc Add (Args) returns (Reply) {}
-	// rpc SayHello (HelloRequest) returns (HelloReply) {}
+	rpc SayHello (stream HelloRequest) returns (stream HelloReply) {}
 }
 
 message Args {
@@ -17,4 +17,12 @@ message Args {
 
 message Reply {
 	int32 num = 1;
+}
+
+message HelloRequest {
+	string s = 1;
+}
+
+message HelloReply {
+	string s = 1;
 }

@@ -18,6 +18,7 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type FooClient interface {
 	Add(ctx context.Context, in *Args, opts ...grpc.CallOption) (*Reply, error)
+	SayHello(ctx context.Context, opts ...grpc.CallOption) (Foo_SayHelloClient, error)
 }
 
 type fooClient struct {
@@ -37,11 +38,43 @@ func (c *fooClient) Add(ctx context.Context, in *Args, opts ...grpc.CallOption) 
 	return out, nil
 }
 
+func (c *fooClient) SayHello(ctx context.Context, opts ...grpc.CallOption) (Foo_SayHelloClient, error) {
+	stream, err := c.cc.NewStream(ctx, &Foo_ServiceDesc.Streams[0], "/pb.Foo/SayHello", opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &fooSayHelloClient{stream}
+	return x, nil
+}
+
+type Foo_SayHelloClient interface {
+	Send(*HelloRequest) error
+	Recv() (*HelloReply, error)
+	grpc.ClientStream
+}
+
+type fooSayHelloClient struct {
+	grpc.ClientStream
+}
+
+func (x *fooSayHelloClient) Send(m *HelloRequest) error {
+	return x.ClientStream.SendMsg(m)
+}
+
+func (x *fooSayHelloClient) Recv() (*HelloReply, error) {
+	m := new(HelloReply)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
 // FooServer is the server API for Foo service.
 // All implementations must embed UnimplementedFooServer
 // for forward compatibility
 type FooServer interface {
 	Add(context.Context, *Args) (*Reply, error)
+	SayHello(Foo_SayHelloServer) error
 	mustEmbedUnimplementedFooServer()
 }
 
@@ -51,6 +84,9 @@ type UnimplementedFooServer struct {
 
 func (UnimplementedFooServer) Add(context.Context, *Args) (*Reply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Add not implemented")
+}
+func (UnimplementedFooServer) SayHello(Foo_SayHelloServer) error {
+	return status.Errorf(codes.Unimplemented, "method SayHello not implemented")
 }
 func (UnimplementedFooServer) mustEmbedUnimplementedFooServer() {}
 
@@ -62,7 +98,7 @@ type UnsafeFooServer interface {
 }
 
 func RegisterFooServer(s grpc.ServiceRegistrar, srv FooServer) {
-	s.RegisterService(&_Foo_serviceDesc, srv)
+	s.RegisterService(&Foo_ServiceDesc, srv)
 }
 
 func _Foo_Add_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -83,7 +119,36 @@ func _Foo_Add_Handler(srv interface{}, ctx context.Context, dec func(interface{}
 	return interceptor(ctx, in, info, handler)
 }
 
-var _Foo_serviceDesc = grpc.ServiceDesc{
+func _Foo_SayHello_Handler(srv interface{}, stream grpc.ServerStream) error {
+	return srv.(FooServer).SayHello(&fooSayHelloServer{stream})
+}
+
+type Foo_SayHelloServer interface {
+	Send(*HelloReply) error
+	Recv() (*HelloRequest, error)
+	grpc.ServerStream
+}
+
+type fooSayHelloServer struct {
+	grpc.ServerStream
+}
+
+func (x *fooSayHelloServer) Send(m *HelloReply) error {
+	return x.ServerStream.SendMsg(m)
+}
+
+func (x *fooSayHelloServer) Recv() (*HelloRequest, error) {
+	m := new(HelloRequest)
+	if err := x.ServerStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
+// Foo_ServiceDesc is the grpc.ServiceDesc for Foo service.
+// It's only intended for direct use with grpc.RegisterService,
+// and not to be introspected or modified (even as a copy)
+var Foo_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "pb.Foo",
 	HandlerType: (*FooServer)(nil),
 	Methods: []grpc.MethodDesc{
@@ -92,6 +157,13 @@ var _Foo_serviceDesc = grpc.ServiceDesc{
 			Handler:    _Foo_Add_Handler,
 		},
 	},
-	Streams:  []grpc.StreamDesc{},
-	Metadata: "pb/pb.proto",
+	Streams: []grpc.StreamDesc{
+		{
+			StreamName:    "SayHello",
+			Handler:       _Foo_SayHello_Handler,
+			ServerStreams: true,
+			ClientStreams: true,
+		},
+	},
+	Metadata: "pb.proto",
 }

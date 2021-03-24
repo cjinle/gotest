@@ -12,15 +12,6 @@ import (
 	"github.com/ugorji/go/codec"
 )
 
-// User struct
-type User struct {
-	UID    uint32  `json:"uid"`
-	Nick   string  `json:"nick"`
-	Score  float32 `json:"score"`
-	Gender uint8   `json:"gender"`
-	Age    uint8   `json:"age"`
-}
-
 // GobEncode func
 func GobEncode() {
 	log.SetFlags(log.Lshortfile | log.LstdFlags)
