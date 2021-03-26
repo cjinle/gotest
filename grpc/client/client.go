@@ -31,38 +31,48 @@ func main() {
 	// 	}
 	// }()
 	ctx := context.Background()
-	i := 0
+	var i int32
 
-	for {
-		i++
-		r, err := c.Add(ctx, &pb.Args{Num1: int32(rand.Intn(100)), Num2: int32(rand.Intn(1000))})
-		if err != nil {
-			log.Println(err)
+	go func() {
+		for {
+			i++
+			r, err := c.Add(ctx, &pb.Args{Num1: int32(rand.Intn(100)), Num2: int32(rand.Intn(1000))})
+			if err != nil {
+				log.Println(err)
+			}
+			log.Println("reply: ", r.Num)
+			time.Sleep(time.Second * 1)
 		}
-		log.Println("reply: ", r.Num)
+	}()
 
-		time.Sleep(time.Second)
-		if i > 5 {
-			continue
-		}
-
-		cli, err := c.SayHello(ctx)
-		if err != nil {
-			log.Println(err)
-			continue
-		}
-		err = cli.Send(&pb.HelloRequest{S: fmt.Sprintf("num: %d", r.Num)})
-		if err != nil {
-			log.Println(err)
-			continue
-		}
-		r2, err := cli.Recv()
-		if err != nil {
-			log.Println(err)
-			continue
-		}
-		log.Println(r2.GetS())
-
+	cli, err := c.Pipe(ctx)
+	if err != nil {
+		log.Println(err)
+		return
 	}
+	go func() {
+		i = 0
+		for {
+			i++
+			err = cli.Send(&pb.DataPack{Cmd: i, Data: []byte(fmt.Sprintf("num: %d", rand.Int31()))})
+			if err != nil {
+				log.Println(err)
+				return
+			}
+			time.Sleep(time.Second * 1)
+		}
+	}()
+	go func() {
+		for {
+			r2, err := cli.Recv()
+			if err != nil {
+				log.Println(err)
+				return
+			}
+			log.Println(r2.GetCmd(), string(r2.GetData()))
+
+		}
+	}()
+	select {}
 
 }

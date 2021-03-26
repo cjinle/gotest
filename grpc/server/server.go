@@ -12,6 +12,7 @@ import (
 
 type server struct {
 	pb.UnimplementedFooServer
+	pipServer pb.Foo_PipeServer
 }
 
 func init() {
@@ -46,6 +47,45 @@ func (s *server) SayHello(stream pb.Foo_SayHelloServer) error {
 			return nil
 		}
 	}
+}
+
+func (s *server) Pipe(stream pb.Foo_PipeServer) error {
+	var i int32
+	s.pipServer = stream
+	// defer func() {
+	// 	s.pipServer = nil
+	// }()
+	// var dpChan chan *pb.DataPack
+	dpChan := make(chan *pb.DataPack)
+	go func() {
+		for {
+			select {
+			case dp := <-dpChan:
+				log.Println("--->>> start send", dp.Cmd, dp.Data)
+				if s.pipServer != nil {
+					s.pipServer.Send(dp)
+				}
+			case <-s.pipServer.Context().Done():
+				log.Println("context done")
+				return
+			}
+		}
+	}()
+	for {
+		i++
+		in, err := stream.Recv()
+		if err == io.EOF {
+			log.Println("read done")
+			break
+		}
+		if err != nil {
+			log.Println("err", err)
+			return err
+		}
+		// log.Println(in)
+		dpChan <- in
+	}
+	return nil
 }
 
 func main() {

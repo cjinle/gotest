@@ -8,6 +8,7 @@ package pb;
 service Foo {
 	rpc Add (Args) returns (Reply) {}
 	rpc SayHello (stream HelloRequest) returns (stream HelloReply) {}
+	rpc Pipe (stream DataPack) returns (stream DataPack) {}
 }
 
 message Args {
@@ -25,4 +26,9 @@ message HelloRequest {
 
 message HelloReply {
 	string s = 1;
+}
+
+message DataPack {
+	int32 cmd = 1;
+	bytes data = 2;
 }

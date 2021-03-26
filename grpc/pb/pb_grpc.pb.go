@@ -19,6 +19,7 @@ const _ = grpc.SupportPackageIsVersion7
 type FooClient interface {
 	Add(ctx context.Context, in *Args, opts ...grpc.CallOption) (*Reply, error)
 	SayHello(ctx context.Context, opts ...grpc.CallOption) (Foo_SayHelloClient, error)
+	Pipe(ctx context.Context, opts ...grpc.CallOption) (Foo_PipeClient, error)
 }
 
 type fooClient struct {
@@ -69,12 +70,44 @@ func (x *fooSayHelloClient) Recv() (*HelloReply, error) {
 	return m, nil
 }
 
+func (c *fooClient) Pipe(ctx context.Context, opts ...grpc.CallOption) (Foo_PipeClient, error) {
+	stream, err := c.cc.NewStream(ctx, &Foo_ServiceDesc.Streams[1], "/pb.Foo/Pipe", opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &fooPipeClient{stream}
+	return x, nil
+}
+
+type Foo_PipeClient interface {
+	Send(*DataPack) error
+	Recv() (*DataPack, error)
+	grpc.ClientStream
+}
+
+type fooPipeClient struct {
+	grpc.ClientStream
+}
+
+func (x *fooPipeClient) Send(m *DataPack) error {
+	return x.ClientStream.SendMsg(m)
+}
+
+func (x *fooPipeClient) Recv() (*DataPack, error) {
+	m := new(DataPack)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
 // FooServer is the server API for Foo service.
 // All implementations must embed UnimplementedFooServer
 // for forward compatibility
 type FooServer interface {
 	Add(context.Context, *Args) (*Reply, error)
 	SayHello(Foo_SayHelloServer) error
+	Pipe(Foo_PipeServer) error
 	mustEmbedUnimplementedFooServer()
 }
 
@@ -87,6 +120,9 @@ func (UnimplementedFooServer) Add(context.Context, *Args) (*Reply, error) {
 }
 func (UnimplementedFooServer) SayHello(Foo_SayHelloServer) error {
 	return status.Errorf(codes.Unimplemented, "method SayHello not implemented")
+}
+func (UnimplementedFooServer) Pipe(Foo_PipeServer) error {
+	return status.Errorf(codes.Unimplemented, "method Pipe not implemented")
 }
 func (UnimplementedFooServer) mustEmbedUnimplementedFooServer() {}
 
@@ -145,6 +181,32 @@ func (x *fooSayHelloServer) Recv() (*HelloRequest, error) {
 	return m, nil
 }
 
+func _Foo_Pipe_Handler(srv interface{}, stream grpc.ServerStream) error {
+	return srv.(FooServer).Pipe(&fooPipeServer{stream})
+}
+
+type Foo_PipeServer interface {
+	Send(*DataPack) error
+	Recv() (*DataPack, error)
+	grpc.ServerStream
+}
+
+type fooPipeServer struct {
+	grpc.ServerStream
+}
+
+func (x *fooPipeServer) Send(m *DataPack) error {
+	return x.ServerStream.SendMsg(m)
+}
+
+func (x *fooPipeServer) Recv() (*DataPack, error) {
+	m := new(DataPack)
+	if err := x.ServerStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
 // Foo_ServiceDesc is the grpc.ServiceDesc for Foo service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -161,6 +223,12 @@ var Foo_ServiceDesc = grpc.ServiceDesc{
 		{
 			StreamName:    "SayHello",
 			Handler:       _Foo_SayHello_Handler,
+			ServerStreams: true,
+			ClientStreams: true,
+		},
+		{
+			StreamName:    "Pipe",
+			Handler:       _Foo_Pipe_Handler,
 			ServerStreams: true,
 			ClientStreams: true,
 		},
