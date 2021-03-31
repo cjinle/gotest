@@ -12,7 +12,7 @@ import (
 
 type server struct {
 	pb.UnimplementedFooServer
-	pipServer pb.Foo_PipeServer
+	pipeServer pb.Foo_PipeServer
 }
 
 func init() {
@@ -51,21 +51,33 @@ func (s *server) SayHello(stream pb.Foo_SayHelloServer) error {
 
 func (s *server) Pipe(stream pb.Foo_PipeServer) error {
 	var i int32
-	s.pipServer = stream
+	s.pipeServer = stream
 	// defer func() {
-	// 	s.pipServer = nil
+	// 	s.pipeServer = nil
 	// }()
 	// var dpChan chan *pb.DataPack
-	dpChan := make(chan *pb.DataPack)
+	dpRecvChan := make(chan *pb.DataPack)
+	dpSendChan := make(chan *pb.DataPack)
+	go func() {
+		for {
+			dp, ok := <-dpRecvChan
+			if !ok {
+				return
+			}
+			log.Println("<<<--- start recv", dp.Cmd, dp.Data)
+			dpSendChan <- dp
+			log.Println("<<<--- recv done", dp.Cmd, dp.Data)
+		}
+	}()
 	go func() {
 		for {
 			select {
-			case dp := <-dpChan:
+			case dp := <-dpSendChan:
 				log.Println("--->>> start send", dp.Cmd, dp.Data)
-				if s.pipServer != nil {
-					s.pipServer.Send(dp)
+				if s.pipeServer != nil {
+					s.pipeServer.Send(dp)
 				}
-			case <-s.pipServer.Context().Done():
+			case <-s.pipeServer.Context().Done():
 				log.Println("context done")
 				return
 			}
@@ -82,8 +94,7 @@ func (s *server) Pipe(stream pb.Foo_PipeServer) error {
 			log.Println("err", err)
 			return err
 		}
-		// log.Println(in)
-		dpChan <- in
+		dpRecvChan <- in
 	}
 	return nil
 }
