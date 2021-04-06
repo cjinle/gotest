@@ -1,15 +1,15 @@
-package system
+package main
 
 import (
-	"log"
-	"os/exec"
 	"bytes"
+	"fmt"
+	"log"
+	"net"
+	"os/exec"
 )
 
-
-
 func init() {
-	log.SetFlags(log.Lshortfile|log.LstdFlags)
+	log.SetFlags(log.Lshortfile | log.LstdFlags)
 }
 
 func Exec() {
@@ -46,4 +46,19 @@ func ExecAsync2() {
 		log.Fatal(err, stderr.String())
 	}
 	log.Println(out.String())
+}
+
+func MacAddr() {
+	fmt.Println(net.InterfaceAddrs())
+	inters, err := net.Interfaces()
+	if err != nil {
+		log.Fatal(err)
+	}
+	for _, v := range inters {
+		log.Println(v.Name, v.HardwareAddr)
+	}
+}
+
+func main() {
+	MacAddr()
 }
